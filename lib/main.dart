@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 import 'services/firestore_service.dart';
+import 'screens/service_selection_screen.dart';
+import 'theme/app_theme.dart';
 import 'utils/mock_data.dart';
 
 void main() async {
@@ -22,47 +24,11 @@ class OmniBookingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'OmniBooking',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      home: const OmniBookingHomePage(),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      home: const ServiceSelectionScreen(),
     );
   }
 }
 
-class OmniBookingHomePage extends StatelessWidget {
-  const OmniBookingHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('OmniBooking'),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.calendar_today,
-              size: 64,
-              color: Colors.blue,
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Welcome to OmniBooking',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Multi-service booking made simple',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+ 
