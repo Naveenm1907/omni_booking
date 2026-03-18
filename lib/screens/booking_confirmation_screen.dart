@@ -64,6 +64,8 @@ class _BookingConfirmationScreenState
                       setState(() => _submitting = true);
                       try {
                         await ref.read(bookingDraftProvider.notifier).submit();
+                        ref.read(selectedServicesProvider.notifier).clear();
+                        ref.read(bookingDraftProvider.notifier).clearSlot();
                         messenger.showSnackBar(
                           const SnackBar(content: Text('Booking created')),
                         );
