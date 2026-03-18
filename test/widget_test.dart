@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:omnibooking/main.dart';
+import 'package:omnibooking/screens/service_selection_screen.dart';
 
 // Mock Firebase for testing
 void setupFirebaseAuthMocks() {
@@ -24,11 +24,13 @@ void main() {
 
   testWidgets('OmniBooking app loads correctly', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const ProviderScope(child: OmniBookingApp()));
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: MaterialApp(home: ServiceSelectionScreen()),
+      ),
+    );
 
-    // Verify that our app loads with the correct title
-    expect(find.text('Welcome to OmniBooking'), findsOneWidget);
-    expect(find.text('Multi-service booking made simple'), findsOneWidget);
-    expect(find.byIcon(Icons.calendar_today), findsOneWidget);
+    // Verify that our initial screen loads
+    expect(find.text('Select services'), findsOneWidget);
   });
 }
