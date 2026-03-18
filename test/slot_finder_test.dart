@@ -1,0 +1,59 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:omnibooking/models/booking.dart';
+import 'package:omnibooking/utils/slot_finder.dart';
+
+Booking _booking({
+  required String id,
+  required DateTime startAt,
+  required int durationMinutes,
+  required int counterId,
+}) {
+  return Booking(
+    id: id,
+    startAt: startAt,
+    durationMinutes: durationMinutes,
+    counterId: counterId,
+    serviceIds: const <String>[],
+    totalPriceCents: 0,
+  );
+}
+
+void main() {
+  test('critical: 60min at 10:00 AM must be blocked', () {
+    final day = DateTime(2026, 3, 18);
+
+    // Ensure that for 10:00-11:00 every counter has some overlap.
+    final bookings = <Booking>[
+      _booking(
+        id: 'c0',
+        startAt: DateTime(day.year, day.month, day.day, 9, 30),
+        durationMinutes: 60, // 09:30-10:30 overlaps
+        counterId: 0,
+      ),
+      _booking(
+        id: 'c1',
+        startAt: DateTime(day.year, day.month, day.day, 10, 0),
+        durationMinutes: 30, // 10:00-10:30 overlaps
+        counterId: 1,
+      ),
+      _booking(
+        id: 'c2',
+        startAt: DateTime(day.year, day.month, day.day, 10, 30),
+        durationMinutes: 30, // 10:30-11:00 overlaps
+        counterId: 2,
+      ),
+    ];
+
+    final slots = const SlotFinder().findSlotsForDay(
+      day: day,
+      durationMinutes: 60,
+      existingBookings: bookings,
+    );
+
+    final tenAm = DateTime(day.year, day.month, day.day, 10, 0);
+    final slotAtTen = slots.firstWhere((s) => s.startAt == tenAm);
+    expect(slotAtTen.isAvailable, isFalse);
+    expect(slotAtTen.counterId, isNull);
+  });
+}
+
