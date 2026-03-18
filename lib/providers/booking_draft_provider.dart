@@ -40,6 +40,14 @@ class BookingDraftNotifier extends Notifier<BookingDraftState> {
       throw StateError('Select at least one service before submitting.');
     }
 
+    final demoMode = ref.read(demoModeProvider);
+    if (demoMode) {
+      // Company assignment: keep the review deterministic and avoid requiring
+      // Firebase auth/rules setup just to demonstrate the algorithm + UX.
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+      return;
+    }
+
     final firestore = ref.read(firestoreServiceProvider);
     final booking = Booking(
       id: '',

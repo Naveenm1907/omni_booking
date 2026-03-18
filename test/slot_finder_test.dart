@@ -54,6 +54,54 @@ void main() {
     final slotAtTen = slots.firstWhere((s) => s.startAt == tenAm);
     expect(slotAtTen.isAvailable, isFalse);
     expect(slotAtTen.counterId, isNull);
+    expect(slotAtTen.availableCounterCount, 0);
+  });
+
+  test('boundary: booking ending at 10:00 does not block 10:00', () {
+    final day = DateTime(2026, 3, 18);
+    final bookings = <Booking>[
+      _booking(
+        id: 'c0',
+        startAt: DateTime(day.year, day.month, day.day, 9, 0),
+        durationMinutes: 60, // 09:00-10:00 ends exactly at 10:00
+        counterId: 0,
+      ),
+    ];
+
+    final slots = const SlotFinder().findSlotsForDay(
+      day: day,
+      durationMinutes: 60,
+      existingBookings: bookings,
+    );
+
+    final tenAm = DateTime(day.year, day.month, day.day, 10, 0);
+    final slotAtTen = slots.firstWhere((s) => s.startAt == tenAm);
+    expect(slotAtTen.isAvailable, isTrue);
+    expect(slotAtTen.availableCounterCount, greaterThan(0));
+  });
+
+  test('assigns another counter when first is blocked', () {
+    final day = DateTime(2026, 3, 18);
+    final bookings = <Booking>[
+      _booking(
+        id: 'c0',
+        startAt: DateTime(day.year, day.month, day.day, 10, 0),
+        durationMinutes: 60,
+        counterId: 0, // blocks counter 0 only
+      ),
+    ];
+
+    final slots = const SlotFinder().findSlotsForDay(
+      day: day,
+      durationMinutes: 60,
+      existingBookings: bookings,
+    );
+
+    final tenAm = DateTime(day.year, day.month, day.day, 10, 0);
+    final slotAtTen = slots.firstWhere((s) => s.startAt == tenAm);
+    expect(slotAtTen.isAvailable, isTrue);
+    expect(slotAtTen.counterId, isNot(0));
+    expect(slotAtTen.availableCounterCount, 2);
   });
 }
 

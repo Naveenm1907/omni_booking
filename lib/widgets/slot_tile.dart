@@ -18,6 +18,7 @@ class SlotTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final isEnabled = slot.isAvailable;
+    final spotsLeft = slot.availableCounterCount;
 
     final Color bg;
     final Color fg;
@@ -43,12 +44,26 @@ class SlotTile extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Text(
-                  _formatTime(slot.startAt),
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(color: fg, fontWeight: FontWeight.w700),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _formatTime(slot.startAt),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(color: fg, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      isEnabled ? '$spotsLeft spot${spotsLeft == 1 ? '' : 's'} left' : 'Unavailable',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: fg.withValues(alpha: 0.75),
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
                 ),
               ),
               if (!isEnabled)

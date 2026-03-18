@@ -34,11 +34,27 @@ class TimeSlotsScreen extends ConsumerWidget {
     final slotsAsync = ref.watch(availableSlotsProvider);
     final draft = ref.watch(bookingDraftProvider);
     final selectedDay = ref.watch(selectedDayProvider);
+    final demoMode = ref.watch(demoModeProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pick a time'),
         actions: [
+          Row(
+            children: [
+              Text(
+                'Demo',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              Switch(
+                value: demoMode,
+                onChanged: (v) {
+                  ref.read(demoModeProvider.notifier).state = v;
+                  ref.read(bookingDraftProvider.notifier).clearSlot();
+                },
+              ),
+            ],
+          ),
           TextButton.icon(
             onPressed: () async {
               final picked = await showDatePicker(

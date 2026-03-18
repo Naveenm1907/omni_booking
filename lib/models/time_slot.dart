@@ -8,10 +8,14 @@ class TimeSlot {
   /// When false, the slot should be rendered as blocked/unavailable.
   final bool isAvailable;
 
+  /// How many counters can accommodate the entire slot duration.
+  final int availableCounterCount;
+
   const TimeSlot({
     required this.startAt,
     required this.endAt,
     required this.isAvailable,
+    required this.availableCounterCount,
     this.counterId,
   });
 

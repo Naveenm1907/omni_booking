@@ -40,13 +40,14 @@ class SlotFinder {
       final range = TimeRange(start: start, end: end);
 
       int? assignedCounterId;
+      var freeCounters = 0;
       for (var counterId = 0; counterId < counters; counterId++) {
         final hasOverlapOnThisCounter = existingBookings
             .where((b) => b.counterId == counterId)
             .any((b) => bookingOverlapsRange(b, range));
         if (!hasOverlapOnThisCounter) {
+          freeCounters++;
           assignedCounterId = counterId;
-          break;
         }
       }
 
@@ -54,7 +55,8 @@ class SlotFinder {
         TimeSlot(
           startAt: start,
           endAt: end,
-          isAvailable: assignedCounterId != null,
+          isAvailable: freeCounters > 0,
+          availableCounterCount: freeCounters,
           counterId: assignedCounterId,
         ),
       );
