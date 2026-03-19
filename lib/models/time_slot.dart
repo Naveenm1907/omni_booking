@@ -20,5 +20,17 @@ class TimeSlot {
   });
 
   Duration get duration => endAt.difference(startAt);
+
+  bool get isPeakTime {
+    // Simple peak window for UX: 11 AM–2 PM.
+    return startAt.hour >= 11 && startAt.hour < 14;
+  }
+
+  String get capacityStatus {
+    if (!isAvailable) return 'Full';
+    if (availableCounterCount >= 3) return 'Plenty';
+    if (availableCounterCount == 2) return 'Good';
+    return 'Limited';
+  }
 }
 
