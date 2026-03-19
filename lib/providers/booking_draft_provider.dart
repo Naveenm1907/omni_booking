@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/booking.dart';
 import 'firestore_providers.dart';
+import 'local_bookings_provider.dart';
 import 'selected_services_provider.dart';
 
 class BookingDraftState {
@@ -40,15 +41,6 @@ class BookingDraftNotifier extends Notifier<BookingDraftState> {
       throw StateError('Select at least one service before submitting.');
     }
 
-    final demoMode = ref.read(demoModeProvider);
-    if (demoMode) {
-      // Company assignment: keep the review deterministic and avoid requiring
-      // Firebase auth/rules setup just to demonstrate the algorithm + UX.
-      await Future<void>.delayed(const Duration(milliseconds: 250));
-      return;
-    }
-
-    final firestore = ref.read(firestoreServiceProvider);
     final booking = Booking(
       id: '',
       startAt: startAt,
@@ -58,7 +50,14 @@ class BookingDraftNotifier extends Notifier<BookingDraftState> {
       totalPriceCents: selected.totalPriceCents,
     );
 
-    await firestore.createBooking(booking);
+    final firestore = ref.read(firestoreServiceProvider);
+    try {
+      await firestore.createBooking(booking);
+    } catch (_) {
+      // Offline / DNS / rules failure: keep the UX usable by saving locally.
+      ref.read(localBookingsProvider.notifier).add(booking);
+      rethrow;
+    }
   }
 }
 
