@@ -37,6 +37,17 @@ class FirestoreService {
         );
   }
 
+  Stream<List<Booking>> watchAllBookings() {
+    return _bookings
+        .orderBy('startAt', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((d) => Booking.fromMap(d.id, d.data()))
+              .toList(growable: false),
+        );
+  }
+
   Future<DocumentReference<Map<String, dynamic>>> createBooking(Booking booking) {
     return _bookings.add(booking.toMap());
   }
