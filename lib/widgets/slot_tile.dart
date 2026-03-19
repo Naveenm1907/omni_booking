@@ -4,74 +4,133 @@ import '../models/time_slot.dart';
 
 class SlotTile extends StatelessWidget {
   final TimeSlot slot;
-  final bool selected;
-  final VoidCallback? onTap;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   const SlotTile({
     super.key,
     required this.slot,
-    required this.selected,
-    this.onTap,
+    required this.isSelected,
+    required this.onTap,
   });
+
+  Color _getSlotColor(BuildContext context) {
+    if (!slot.isAvailable) return Colors.red.shade100;
+    if (isSelected) {
+      return Theme.of(context).colorScheme.primary.withValues(alpha: 0.12);
+    }
+    if (slot.isPeakTime) return Colors.purple.shade50;
+    if (slot.availableCounterCount == 3) return Colors.green.shade100;
+    if (slot.availableCounterCount >= 1) return Colors.orange.shade100;
+    return Colors.grey.shade200;
+  }
+
+  Color _getBorderColor(BuildContext context) {
+    if (!slot.isAvailable) return Colors.red;
+    if (isSelected) return Theme.of(context).colorScheme.primary;
+    if (slot.isPeakTime && slot.isAvailable) return Colors.purple.shade400;
+    if (slot.availableCounterCount == 3) return Colors.green;
+    if (slot.availableCounterCount >= 1) return Colors.orange;
+    return Colors.grey;
+  }
+
+  String get _statusText {
+    if (!slot.isAvailable) return 'Full';
+    if (slot.isPeakTime) return 'Peak';
+    return slot.capacityStatus;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final isEnabled = slot.isAvailable;
-    final spotsLeft = slot.availableCounterCount;
-
-    final Color bg;
-    final Color fg;
-    if (!isEnabled) {
-      bg = scheme.surfaceContainerHighest.withValues(alpha: 0.6);
-      fg = scheme.onSurface.withValues(alpha: 0.45);
-    } else if (selected) {
-      bg = scheme.primaryContainer;
-      fg = scheme.onPrimaryContainer;
-    } else {
-      bg = scheme.surfaceContainerHighest;
-      fg = scheme.onSurface;
-    }
-
     return Material(
-      color: bg,
       borderRadius: BorderRadius.circular(12),
+      elevation: slot.isAvailable ? (isSelected ? 4 : 1) : 0,
       child: InkWell(
-        onTap: isEnabled ? onTap : null,
         borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          child: Row(
+        onTap: slot.isAvailable ? onTap : null,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: _getSlotColor(context),
+            border: Border.all(
+              color: _getBorderColor(context),
+              width: isSelected ? 2 : 1,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Text(
                       _formatTime(slot.startAt),
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: fg, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      isEnabled ? '$spotsLeft spot${spotsLeft == 1 ? '' : 's'} left' : 'Unavailable',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: fg.withValues(alpha: 0.75),
-                            fontWeight: FontWeight.w600,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight:
+                                isSelected ? FontWeight.bold : FontWeight.w600,
+                            fontSize: 14,
+                            color: slot.isAvailable
+                                ? Theme.of(context).colorScheme.onSurface
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withValues(alpha: 0.6),
                           ),
                     ),
-                  ],
-                ),
+                  ),
+                  if (slot.isPeakTime && slot.isAvailable)
+                    Container(
+                      margin: const EdgeInsets.only(left: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade600,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        'PEAK',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 7,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                ],
               ),
-              if (!isEnabled)
-                Icon(Icons.block, size: 18, color: fg)
-              else if (selected)
-                Icon(Icons.check, size: 18, color: fg)
-              else
-                Icon(Icons.chevron_right, size: 18, color: fg.withValues(alpha: 0.7)),
+              const SizedBox(height: 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      _statusText,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: slot.isAvailable
+                                ? _getBorderColor(context)
+                                : Theme.of(context).colorScheme.error,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 11,
+                          ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (slot.isAvailable)
+                    Text(
+                      '${slot.availableCounterCount} left',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: slot.isPeakTime
+                                ? Colors.orange.shade700
+                                : Colors.green.shade700,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                          ),
+                    ),
+                ],
+              ),
             ],
           ),
         ),

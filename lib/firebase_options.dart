@@ -41,42 +41,45 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBkLePT-cFkVhm4JmRyEuGUbNyYf-OgG0I',
-    appId: '1:123456789:web:abcdefghijklmnop',
-    messagingSenderId: '123456789',
-    projectId: 'omnibooking-demo',
-    authDomain: 'omnibooking-demo.firebaseapp.com',
-    storageBucket: 'omnibooking-demo.appspot.com',
-    measurementId: 'G-MEASUREMENT',
+    apiKey: 'AIzaSyAURNVpj0XiJaCSvNN-nTnSiouUFuE1E9k',
+    appId: '1:982165859272:web:0a88cdc4bc73410d8beefd',
+    messagingSenderId: '982165859272',
+    projectId: 'omnibooking-58f9a',
+    authDomain: 'omnibooking-58f9a.firebaseapp.com',
+    storageBucket: 'omnibooking-58f9a.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBkLePT-cFkVhm4JmRyEuGUbNyYf-OgG0I',
-    appId: '1:123456789:android:abcdefghijklmnop',
-    messagingSenderId: '123456789',
-    projectId: 'omnibooking-demo',
+    apiKey: 'AIzaSyAURNVpj0XiJaCSvNN-nTnSiouUFuE1E9k',
+    appId: '1:982165859272:android:0a88cdc4bc73410d8beefd',
+    messagingSenderId: '982165859272',
+    projectId: 'omnibooking-58f9a',
+    storageBucket: 'omnibooking-58f9a.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBkLePT-cFkVhm4JmRyEuGUbNyYf-OgG0I',
-    appId: '1:123456789:ios:abcdefghijklmnop',
-    messagingSenderId: '123456789',
-    projectId: 'omnibooking-demo',
+    apiKey: 'AIzaSyAURNVpj0XiJaCSvNN-nTnSiouUFuE1E9k',
+    appId: '1:982165859272:ios:0a88cdc4bc73410d8beefd',
+    messagingSenderId: '982165859272',
+    projectId: 'omnibooking-58f9a',
+    storageBucket: 'omnibooking-58f9a.firebasestorage.app',
     iosBundleId: 'com.example.omnibooking',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBkLePT-cFkVhm4JmRyEuGUbNyYf-OgG0I',
-    appId: '1:123456789:macos:abcdefghijklmnop',
-    messagingSenderId: '123456789',
-    projectId: 'omnibooking-demo',
+    apiKey: 'AIzaSyAURNVpj0XiJaCSvNN-nTnSiouUFuE1E9k',
+    appId: '1:982165859272:macos:0a88cdc4bc73410d8beefd',
+    messagingSenderId: '982165859272',
+    projectId: 'omnibooking-58f9a',
+    storageBucket: 'omnibooking-58f9a.firebasestorage.app',
     iosBundleId: 'com.example.omnibooking',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBkLePT-cFkVhm4JmRyEuGUbNyYf-OgG0I',
-    appId: '1:123456789:windows:abcdefghijklmnop',
-    messagingSenderId: '123456789',
-    projectId: 'omnibooking-demo',
+    apiKey: 'AIzaSyAURNVpj0XiJaCSvNN-nTnSiouUFuE1E9k',
+    appId: '1:982165859272:windows:0a88cdc4bc73410d8beefd',
+    messagingSenderId: '982165859272',
+    projectId: 'omnibooking-58f9a',
+    storageBucket: 'omnibooking-58f9a.firebasestorage.app',
   );
 }

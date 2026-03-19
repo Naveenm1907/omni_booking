@@ -38,6 +38,9 @@ dependencies:
   # State management
   flutter_riverpod: ^2.6.1
   
+  # Fonts
+  google_fonts: ^6.3.3
+  
   # UI components
   cupertino_icons: ^1.0.8
 

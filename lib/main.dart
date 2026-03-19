@@ -4,10 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 
-import 'services/firestore_service.dart';
 import 'screens/service_selection_screen.dart';
 import 'theme/app_theme.dart';
-import 'utils/mock_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +20,6 @@ void main() async {
     persistenceEnabled: true,
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
-
-  await FirestoreService().seedServicesIfEmpty(MockData.services);
   runApp(const ProviderScope(child: OmniBookingApp()));
 }
 
@@ -36,6 +32,7 @@ class OmniBookingApp extends StatelessWidget {
       title: 'OmniBooking',
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
+      debugShowCheckedModeBanner: false, // Remove debug banner
       home: const ServiceSelectionScreen(),
     );
   }

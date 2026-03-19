@@ -16,58 +16,77 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final bg = selected ? scheme.primaryContainer : scheme.surfaceContainerHighest;
-    final fg = selected ? scheme.onPrimaryContainer : scheme.onSurface;
-
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Card(
-      clipBehavior: Clip.antiAlias,
+      elevation: selected ? 4 : 2,
+      margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
+        borderRadius: BorderRadius.circular(12),
         onTap: onTap,
         child: Container(
-          color: bg,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            border: selected
+                ? Border.all(color: colorScheme.primary, width: 2)
+                : null,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Row(
             children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: selected ? scheme.primary : scheme.surface,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.content_cut,
-                  color: selected ? scheme.onPrimary : scheme.primary,
-                ),
-              ),
-              const SizedBox(width: 12),
+              // Service details
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       service.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(color: fg, fontWeight: FontWeight.w700),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: selected ? colorScheme.primary : null,
+                      ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Text(
-                      '${service.durationMinutes} min • ${_formatPrice(service.priceCents)}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: fg.withValues(alpha: 0.85)),
+                      '${service.durationMinutes} minutes',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey[600],
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              Icon(
-                selected ? Icons.check_circle : Icons.add_circle_outline,
-                color: selected ? scheme.primary : scheme.outline,
+              
+              // Price and selection
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    _formatPrice(service.priceCents),
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  if (selected)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'Selected',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ],
           ),
@@ -76,9 +95,9 @@ class ServiceCard extends StatelessWidget {
     );
   }
 
-  static String _formatPrice(int cents) {
-    final value = cents / 100.0;
-    return '\$${value.toStringAsFixed(2)}';
+  static String _formatPrice(int priceCents) {
+    final rupees = (priceCents / 100).round();
+    return '₹$rupees';
   }
 }
 
