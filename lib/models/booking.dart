@@ -31,6 +31,8 @@ class Booking {
     );
   }
 
+
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'startAt': Timestamp.fromDate(startAt),
