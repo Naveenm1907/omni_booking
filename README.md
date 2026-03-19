@@ -2,7 +2,24 @@
 
 A sophisticated Flutter application for service-based businesses that manages appointments across multiple independent service counters. Built with modern architecture and real-time availability calculation.
 
-## Overview
+## Demo Video
+
+> ** See OmniBooking in Action**
+> 
+> Watch how the multi-counter availability algorithm works in real-time:
+> 
+> **[Watch Demo Video](assets/video_explanation.mp4)**
+> 
+> *Complete demonstration showing service selection, real-time slot availability calculation, and booking confirmation with counter assignment*
+> 
+> ### What the Demo Shows:
+> -  **Multi-service selection** with live price calculation
+> -  **Algorithm in action** - slots blocked/available based on 3-counter availability  
+> -  **Real-time updates** as service combinations change
+> -  **Assignment validation** - critical 10:00 AM test case demonstrated
+> -  **Counter assignment** - system assigns optimal counter for booking
+
+##  Overview
 
 OmniBooking solves the complex challenge of managing appointments across multiple service counters while ensuring optimal resource allocation. The app provides real-time availability calculations based on service duration combinations and counter occupancy.
 
@@ -135,7 +152,7 @@ flutter run
 
 The app will work immediately with mock data and offline functionality.
 
-##  Core Algorithm: Multi-Counter Availability
+## Core Algorithm: Multi-Counter Availability
 
 ### **The Challenge**
 Determining if a time slot is available when:
@@ -153,10 +170,51 @@ Our algorithm uses **half-open time ranges** `[start, end)` to detect overlaps:
    - If any counter is free for the entire duration → Slot Available
 3. **Assign counter ID** for booking confirmation
 
+### **Visual Example: Assignment Test Case**
+
+**Scenario**: User selects 60-minute service, wants to book at 10:00 AM
+
+**Existing Bookings** (from assignment):
+```
+Counter 1: [10:00 ─── 11:00)  ❌ OVERLAPS with [10:00 ─── 11:00)
+Counter 2: [10:30 ── 11:30)   ❌ OVERLAPS with [10:00 ─── 11:00)  
+Counter 3: [09:00 ──── 10:30) ❌ OVERLAPS with [10:00 ─── 11:00)
+```
+
+**Result**: ❌ **BLOCKED** - All counters have conflicts
+
+**Alternative: 11:30 AM slot**:
+```
+Counter 1: [10:00 ─── 11:00)  ✅ NO OVERLAP with [11:30 ─── 12:30)
+Counter 2: [10:30 ── 11:30)   ✅ NO OVERLAP with [11:30 ─── 12:30)
+Counter 3: [09:00 ──── 10:30) ✅ NO OVERLAP with [11:30 ─── 12:30)
+```
+
+**Result**:  **AVAILABLE** - Counter 1 assigned
+
 ### **Overlap Detection Formula**
 ```
 Two time ranges overlap if:
 (StartA < EndB) AND (EndA > StartB)
+```
+
+### **Code Implementation**
+```dart
+// Core logic from lib/utils/slot_finder.dart
+for (var counterId = 0; counterId < counters; counterId++) {
+  final hasOverlapOnThisCounter = existingBookings
+      .where((b) => b.counterId == counterId)
+      .any((b) => bookingOverlapsRange(b, proposedTimeRange));
+  
+  if (!hasOverlapOnThisCounter) {
+    // Counter is free for entire duration
+    return TimeSlot(
+      isAvailable: true, 
+      counterId: counterId,
+      availableCounterCount: freeCounters
+    );
+  }
+}
 ```
 
 ##  Development
