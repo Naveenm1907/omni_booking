@@ -2,37 +2,37 @@
 
 A sophisticated Flutter application for service-based businesses that manages appointments across multiple independent service counters. Built with modern architecture and real-time availability calculation.
 
-## 🚀 Overview
+## Overview
 
 OmniBooking solves the complex challenge of managing appointments across multiple service counters while ensuring optimal resource allocation. The app provides real-time availability calculations based on service duration combinations and counter occupancy.
 
-## ✨ Key Features
+##  Key Features
 
-### 🛍️ Smart Service Selection
+###  Smart Service Selection
 - **Multi-service basket** with dynamic price and duration calculation
 - **Live updates** as services are added/removed
 - **Search functionality** for easy service discovery
 - **Visual selection indicators** with clear pricing
 
-### 🕒 Intelligent Time Slot Management
+###  Intelligent Time Slot Management
 - **Real-time availability** across 3 independent counters
 - **15-minute interval slots** from 9:00 AM to 6:00 PM
 - **Dynamic slot blocking** based on total service duration
 - **Capacity indicators** showing available counters ("2 left", "1 left")
 - **Peak time highlighting** for busy periods
 
-### 📱 Modern User Experience
+###  Modern User Experience
 - **Material Design 3** with professional emerald theme
 - **Responsive navigation** with overflow protection
 - **Date navigation** with prev/next controls
 - **Booking history** with smart filtering (Today, Week, Month, All)
 - **Offline capability** with local data persistence
 
-## 📸 Screenshots
+##  Screenshots
 
 | Service Selection | Multiple Services | Time Slots |
 |:---:|:---:|:---:|
-| ![Service Selection](assets/home.jpg) | ![Multiple Services](assets/service_selection1.jpg) | ![Time Slots](assets/time_slots1.jpg) |
+| ![Service Selection](assets/home.jpg) | ![Multiple Services](assets/serviceselection1.jpg) | ![Time Slots](assets/time_slots1.jpg) |
 
 | Date Selection | Booking Preview | Booking Success |
 |:---:|:---:|:---:|
@@ -42,7 +42,7 @@ OmniBooking solves the complex challenge of managing appointments across multipl
 |:---:|:---:|:---:|
 | ![Slot Selection](assets/slot_selected.jpg) | ![Time Availability](assets/time_slots2.jpg) | ![Booking History](assets/booking_history.jpg) |
 
-## 🏗️ Technical Architecture
+##  Technical Architecture
 
 ### **Frontend**
 - **Flutter** (Latest Stable) with Material Design 3
@@ -71,7 +71,7 @@ for (var counterId = 0; counterId < counters; counterId++) {
 }
 ```
 
-## 📊 Data Models
+##  Data Models
 
 ### Services Collection
 ```json
@@ -93,22 +93,22 @@ for (var counterId = 0; counterId < counters; counterId++) {
 }
 ```
 
-## 🧪 Testing & Quality Assurance
+##  Testing & Quality Assurance
 
 ### **Assignment Requirements Validation**
-✅ **Mock Data Testing**: Implements exact assignment dataset
+ **Mock Data Testing**: Implements exact assignment dataset
 - Counter 1: 10:00 AM – 11:00 AM
 - Counter 2: 10:30 AM – 11:30 AM  
 - Counter 3: 09:00 AM – 10:30 AM
 
-✅ **Critical Test Case**: 60-minute service at 10:00 AM correctly shows as unavailable
+ **Critical Test Case**: 60-minute service at 10:00 AM correctly shows as unavailable
 
 ### **Unit Testing**
 ```bash
 flutter test test/slot_finder_test.dart
 ```
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Flutter SDK (3.0.0 or higher)
@@ -135,7 +135,7 @@ flutter run
 
 The app will work immediately with mock data and offline functionality.
 
-## 🎯 Core Algorithm: Multi-Counter Availability
+##  Core Algorithm: Multi-Counter Availability
 
 ### **The Challenge**
 Determining if a time slot is available when:
@@ -159,7 +159,7 @@ Two time ranges overlap if:
 (StartA < EndB) AND (EndA > StartB)
 ```
 
-## 🛠️ Development
+##  Development
 
 ### **Project Structure**
 ```
@@ -178,7 +178,7 @@ lib/
 - `lib/providers/selected_services_provider.dart` - Service basket logic
 - `lib/screens/time_slots_screen.dart` - Time slot grid UI
 
-## 📋 Business Rules
+##  Business Rules
 
 - **Operating Hours**: 9:00 AM - 6:00 PM
 - **Slot Intervals**: 15 minutes
@@ -186,18 +186,18 @@ lib/
 - **Peak Hours**: 11:00 AM - 2:00 PM (visual indicators)
 - **Booking Limit**: No same-time double-booking per counter
 
-## 🎨 AI Usage Disclosure
+##  AI Usage Disclosure
 
 This application was developed with assistance from AI coding tools:
 
 - **GitHub Copilot CLI**: Used for code scaffolding, UI improvements, and state management setup
-- **Code Architecture**: Human-designed with AI assistance for implementation details  
+- **Code Architecture**: Human-designed
 - **Algorithm Logic**: Core slot-finding algorithm verified and tested by human developer
 - **UI/UX Design**: AI-assisted styling with human oversight for professional appearance
 
 All AI-generated code was reviewed, tested, and integrated by the development team to ensure quality and correctness.
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
